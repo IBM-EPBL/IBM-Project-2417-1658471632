@@ -1,51 +1,47 @@
 // C++ code
 //
-int trig =2;
-int echo=3;
 void setup()
 {
- Serial.begin(9600);
-  pinMode(13, OUTPUT);
-  pinMode(trig, OUTPUT);
-  pinMode(echo, INPUT);
+  Serial.begin(9600);
+  pinMode(2, INPUT);
   pinMode(4, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
 }
 
 void loop()
 {
-  double a=analogRead(A1);
-  Serial.print("ADC Value:");
+  int m=digitalRead(2);
+  Serial.print("Motion Detection:");
+  double a=analogRead(A2);
+  Serial.print("ADC Value: ");
   Serial.println(a);
   double v=a/1024;
-  double volt=v*5;
-  Serial.print("Temp Value:");
-  Serial.println(volt);
-  double x=volt-0.5;
-  double t=x*100;
+  double tv=v*5;
+  Serial.print("Temp. in Voltage:");
+  Serial.println(tv);
+  double o=tv-0.5;
+  double t=o*100;
   Serial.print("Temperature:");
   Serial.println(t);
   if(t>40)
-  {
-    digitalWrite(13, HIGH);
-  }
-  else
-  {
-    digitalWrite(13,LOW);
-  }
-  digitalWrite(trig, LOW);
-  digitalWrite(trig, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trig, LOW);
-  float dur=pulseIn(echo, HIGH);
-  float dist= (dur*0.0343)/2;
-  Serial.print("distance");
-  Serial.println(dist);
-  if(dist>=100)
   {
     digitalWrite(4, HIGH);
   }
   else
   {
-    digitalWrite(4, LOW);
+    digitalWrite(4,LOW);
+  }
+  if(m==0)
+  {
+    Serial.println("No");
+    digitalWrite(8, HIGH);
+    digitalWrite(7, LOW);
+  }
+  else
+  {
+    Serial.println("Yes");
+    digitalWrite(7, HIGH);
+    digitalWrite(8, LOW);
   }
 }
